@@ -1,9 +1,8 @@
 //
 //  PKBraintreeHelper.swift
-//  bikers.outlet
 //
-//  Created by Etelligens on 23/08/18.
-//  Copyright © 2018 Etelligens. All rights reserved.
+//  Created by Pramod Kumar on 23/08/18.
+//  Copyright © 2018 Pramod Kumar. All rights reserved.
 //
 
 import UIKit
