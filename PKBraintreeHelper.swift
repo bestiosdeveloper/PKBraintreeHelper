@@ -82,7 +82,7 @@ class PKBraintreeHelper: NSObject {
     
     //MARK:- Methods
     //MARK:- Public
-    func makePayment(onViewController: UIViewController, toKinizationKey: String, forAmount: Double, serverPaymentUrl: String, complition: ((Bool, NSError)->Void)? = nil) {
+    func makePayment(onViewController: UIViewController, toKinizationKey: String, forAmount amount: Double, forCurrencyCode currencyCode: String, serverPaymentUrl: String, complition: ((Bool, NSError)->Void)? = nil) {
         
         guard !serverPaymentUrl.isEmpty, let url = URL(string: serverPaymentUrl) else {
             fatalError("Please pass a valid server payment url")
@@ -95,6 +95,8 @@ class PKBraintreeHelper: NSObject {
         self.paymentComplitionHandler = complition
         
         let request =  BTDropInRequest()
+        request.amount = "\(amount)"
+        request.currencyCode = currencyCode
         let dropIn = BTDropInController(authorization: toKinizationKey, request: request) { [weak self] (controller, result, error) in
             
             if let err = error {
@@ -107,7 +109,7 @@ class PKBraintreeHelper: NSObject {
                 self?.executeComplition(code: PKBraintreeHelperError.cancelled.code, message: PKBraintreeHelperError.cancelled.message)
             }
             else if let nonce = result?.paymentMethod?.nonce {
-                self?.sendPaymentRequestToServer(url: url, nonce: nonce, amount: forAmount)
+                self?.sendPaymentRequestToServer(url: url, nonce: nonce, amount: amount)
             }
             controller.dismiss(animated: true, completion: nil)
         }
@@ -159,10 +161,6 @@ class PKBraintreeHelper: NSObject {
             let err = NSError(code: code, localizedDescription: message)
             handel(code == PKBraintreeHelperError.success.code, err)
         }
-    }
-    
-    private func c() {
-        
     }
 }
 
